@@ -24,19 +24,25 @@
 ## 🏗️ Architecture
 
 ```mermaid
-graph TD
-    User((User)) -->|Chat| FE[Next.js Frontend]
-    FE -->|API Request| BE[FastAPI Backend]
+graph LR
+    User([User]) -- "Natural Language" --> FE["Next.js Dashboard"]
+    FE -- "REST API (FastAPI)" --> BE["Python Backend"]
     
-    subgraph "Intelligent Core"
-    BE --> ORCH[Orchestrator Agent]
-    ORCH -->|Identify Intent| MA[Maintenance Agent]
-    ORCH -.->|Planned| FA[Finance Agent]
+    subgraph "AI Orchestration Layer"
+        BE --> LLM[["LLM (LangChain + OpenAI)"]]
+        BE --> Orch{Orchestrator}
+        Orch -- "Routes To" --> MA["Maintenance Agent"]
     end
     
-    subgraph "Data Layer"
-    BE --> DB[(SQLite/PostgreSQL)]
+    subgraph "Persistence"
+        BE --> DB[(SQLite Database)]
     end
+
+    style User fill:#f9f,stroke:#333,stroke-width:2px
+    style LLM fill:#6cf,stroke:#333,stroke-width:2px
+    style Orch fill:#f96,stroke:#333,stroke-width:2px
+    style BE fill:#dfd,stroke:#333,stroke-width:2px
+    style FE fill:#ddf,stroke:#333,stroke-width:2px
 ```
 
 ---
