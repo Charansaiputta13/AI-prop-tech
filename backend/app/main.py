@@ -1,0 +1,33 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.core.config import settings
+from app.api.v1 import chat
+
+app = FastAPI(title=settings.PROJECT_NAME, version="0.1.0")
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # TODO: Restrict in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include Routers
+app.include_router(chat.router, prefix="/api/v1/chat", tags=["chat"])
+
+@app.on_event("startup")
+def startup_event():
+    from app.core.database import Base, engine
+    # Import all models to ensure they are registered
+    from app.models import user, property 
+    Base.metadata.create_all(bind=engine)
+
+@app.get("/")
+def read_root():
+    return {"status": "ok", "message": f"{settings.PROJECT_NAME} API is running"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}

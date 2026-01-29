@@ -1,0 +1,9 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+reproduce_issue.py
+reproduce_urgency.py
+test.db
+test_robust_detection.py
