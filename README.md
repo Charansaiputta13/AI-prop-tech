@@ -1,68 +1,82 @@
-# AI-First Property Management System (AI-PMS)
+<div align="center">
+  <img src="https://img.shields.io/badge/AI--PMS-PropTech-blueviolet?style=for-the-badge&logo=openai" />
+  <img src="https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js" />
+  <img src="https://img.shields.io/badge/FastAPI-Modern-green?style=for-the-badge&logo=fastapi" />
+  <img src="https://img.shields.io/badge/Docker-Ready-blue?style=for-the-badge&logo=docker" />
+  
+  # 🏢 AI-First Property Management System (AI-PMS)
+  **Elevating real estate management through intelligent agent orchestration.**
+  
+  [Explore Features](#-features-that-wow) • [Quick Start](#-getting-started) • [Architecture](#-architecture)
+</div>
 
-An intelligent, agentic platform for autonomous property management.
+---
 
-## 🚀 Overview
+## ✨ Features that WOW
 
-AI-PMS is a modern, full-stack application leveraging AI agents to automate the property lifecycle. From tenant onboarding and maintenance coordination to financial reporting, our agents handle the heavy lifting.
-
-### Key Features
-- **Intelligent Orchestration**: A central agent that routes requests to specialized sub-agents.
-- **Maintenance Agent**: Automates maintenance request intake, priority assessment, and vendor assignment.
-- **Finance Agent**: Handles rent tracking and invoice generation.
-- **Modern UI**: A responsive, premium dashboard built with Next.js and Tailwind CSS.
+*   **🤖 Smart Orchestrator**: A sophisticated central agent that understands intent and routes tasks to specialized sub-agents.
+*   **🛠️ Autonomous Maintenance**: End-to-end maintenance flow—problem description, urgency assessment, and simulated vendor assignment.
+*   **💳 Finance Agent**: Intelligent rent tracking and automated invoice history management.
+*   **💎 Premium Dashboard**: A sleek, glassmorphic UI built with Next.js 14, Tailwind CSS, and Framer Motion.
+*   **🐳 Docker-Native**: Fully containerized for consistent deployment across any environment.
 
 ---
 
 ## 🏗️ Architecture
 
-The system follows a microservices-inspired architecture:
-
-- **Frontend**: Next.js (App Router) + Tailwind CSS + Framer Motion.
-- **Backend**: FastAPI + LangChain + SQLAlchemy.
-- **AI Engine**: LangChain-powered agents (defaulting to GPT-3.5-Turbo).
+```mermaid
+graph TD
+    User((User)) -->|Chat| FE[Next.js Frontend]
+    FE -->|API Request| BE[FastAPI Backend]
+    
+    subgraph "Intelligent Core"
+    BE --> ORCH[Orchestrator Agent]
+    ORCH -->|Identify Intent| MA[Maintenance Agent]
+    ORCH -->|Identify Intent| FA[Finance Agent]
+    end
+    
+    subgraph "Data Layer"
+    BE --> DB[(SQLite/PostgreSQL)]
+    end
+```
 
 ---
 
 ## 🛠️ Getting Started
 
-### Prerequisites
-- [Docker & Docker Compose](https://docs.docker.com/get-docker/)
-- OpenAI API Key (Optional, fallbacks to "Echo Mode" if missing)
+### 🐳 Running with Docker (Recommended)
 
-### Running with Docker (Recommended)
+1.  **Clone & Enter**:
+    ```bash
+    git clone https://github.com/Charansaiputta13/AI-prop-tech.git
+    cd AI-prop-tech
+    ```
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd ai-prop-tech
-   ```
+2.  **Spin Up**:
+    ```bash
+    docker compose up --build
+    ```
 
-2. Start the services:
-   ```bash
-   docker compose up --build
-   ```
-
-3. Access the application:
-    - **Frontend**: http://localhost:3000
-    - **Backend API**: http://localhost:8000
+3.  **Access**:
+    *   **Dashboard**: `http://localhost:3000`
+    *   **API Docs**: `http://localhost:8000/docs`
 
 ---
 
-## 📄 Development
+## 📄 Development Flow
 
-### Manual Setup
+If you prefer to run things manually:
 
-#### Backend
+#### 🐍 Backend Setup
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # venv\Scripts\activate on Windows
+venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-#### Frontend
+#### ⚛️ Frontend Setup
 ```bash
 cd frontend
 npm install
@@ -71,5 +85,6 @@ npm run dev
 
 ---
 
-## 🔒 License
-Proprietary. All rights reserved.
+<div align="center">
+  <sub>Built with ❤️ for the future of PropTech.</sub>
+</div>
