@@ -16,8 +16,7 @@
 
 *   **🤖 Smart Orchestrator**: A sophisticated central agent that understands intent and routes tasks to specialized sub-agents.
 *   **🛠️ Autonomous Maintenance**: End-to-end maintenance flow—problem description, urgency assessment, and simulated vendor assignment.
-*   **💳 Finance Agent**: Intelligent rent tracking and automated invoice history management.
-*   **💎 Premium Dashboard**: A sleek, glassmorphic UI built with Next.js 14, Tailwind CSS, and Framer Motion.
+*   **💳 Premium Dashboard**: A sleek, glassmorphic UI built with Next.js 14, Tailwind CSS, and Framer Motion.
 *   **🐳 Docker-Native**: Fully containerized for consistent deployment across any environment.
 
 ---
@@ -32,13 +31,21 @@ graph TD
     subgraph "Intelligent Core"
     BE --> ORCH[Orchestrator Agent]
     ORCH -->|Identify Intent| MA[Maintenance Agent]
-    ORCH -->|Identify Intent| FA[Finance Agent]
+    ORCH -.->|Planned| FA[Finance Agent]
     end
     
     subgraph "Data Layer"
     BE --> DB[(SQLite/PostgreSQL)]
     end
 ```
+
+---
+
+## 🚀 Future Roadmap
+
+- [ ] **Finance Agent**: Full automation for rent collection, invoice generation, and financial reporting.
+- [ ] **Onboarding Agent**: AI-driven tenant screening and digital lease signing.
+- [ ] **Property Analytics**: Predictive insights for vacancy risk and ROI optimization.
 
 ---
 
