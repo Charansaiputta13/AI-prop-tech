@@ -3,6 +3,7 @@ uvicorn
 sqlalchemy
 psycopg2-binary
 langchain
-openai
+langchain-openai
 python-dotenv
 pydantic-settings
+openai
