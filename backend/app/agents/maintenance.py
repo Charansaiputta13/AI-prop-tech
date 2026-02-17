@@ -15,7 +15,7 @@ class MaintenanceResponse(BaseModel):
 class MaintenanceAgent:
     def __init__(self):
         self.api_key = os.getenv("GROQ_API_KEY")
-        self.llm = ChatGroq(model="llama3-70b-8192", temperature=0)
+        self.llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
         self.parser = PydanticOutputParser(pydantic_object=MaintenanceResponse)
         
         self.prompt = ChatPromptTemplate.from_messages([

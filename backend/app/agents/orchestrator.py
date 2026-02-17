@@ -11,7 +11,7 @@ class OrchestratorAgent:
     def __init__(self):
         self.api_key = os.getenv("GROQ_API_KEY")
         if self.api_key:
-            self.llm = ChatGroq(model="llama3-8b-8192", temperature=0)
+            self.llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0)
         else:
             self.llm = None
             
