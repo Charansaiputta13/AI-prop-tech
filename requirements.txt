@@ -1,8 +1,9 @@
-﻿fastapi
+fastapi
 uvicorn
 sqlalchemy
 psycopg2-binary
 langchain
-openai
+langchain-openai
 python-dotenv
 pydantic-settings
+streamlit

@@ -28,29 +28,26 @@ export default function ChatWindow() {
 
         const userMsg = input;
         setInput("");
-        setMessages((prev) => [...prev, { role: "user", content: userMsg }]);
+
+        // Optimistic update
+        const newHistory = [...messages, { role: "user", content: userMsg }];
+        setMessages(newHistory as Message[]);
         setIsLoading(true);
 
         try {
-            const res = await fetch("http://localhost:8000/api/v1/chat/send", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    message: userMsg,
-                    user_id: "demo-user", // TODO: Auth
-                    history: messages, // Send current history
-                }),
-            });
+            // Import dynamically or use the imported service
+            const { chatService } = await import("../../services/api");
 
-            if (!res.ok) throw new Error("Failed to send message");
+            // Format history for backend if needed, but simple passing is fine for now
+            // The backend expects list of objects with role/content
+            const response = await chatService.sendMessage(userMsg, newHistory);
 
-            const data = await res.json();
-            setMessages((prev) => [...prev, { role: "assistant", content: data.response }]);
+            setMessages((prev) => [...prev, { role: "assistant", content: response.response }]);
         } catch (error) {
             console.error(error);
             setMessages((prev) => [
                 ...prev,
-                { role: "assistant", content: "Sorry, I'm having trouble connecting to the server right now." },
+                { role: "assistant", content: "Sorry, I'm having trouble connecting to the server. Please ensure the backend is running." },
             ]);
         } finally {
             setIsLoading(false);

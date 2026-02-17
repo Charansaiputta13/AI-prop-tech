@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import os
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.v1 import chat
@@ -8,7 +9,7 @@ app = FastAPI(title=settings.PROJECT_NAME, version="0.1.0")
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # TODO: Restrict in production
+    allow_origins=[os.getenv("FRONTEND_URL", "http://localhost:3000"), "http://localhost:8000"], # Restrict to frontend and self
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,7 +22,7 @@ app.include_router(chat.router, prefix="/api/v1/chat", tags=["chat"])
 def startup_event():
     from app.core.database import Base, engine
     # Import all models to ensure they are registered
-    from app.models import user, property 
+    from app.models import user, property, ticket 
     Base.metadata.create_all(bind=engine)
 
 @app.get("/")
