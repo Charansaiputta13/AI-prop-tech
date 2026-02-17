@@ -43,11 +43,23 @@ export default function ChatWindow() {
             const response = await chatService.sendMessage(userMsg, newHistory);
 
             setMessages((prev) => [...prev, { role: "assistant", content: response.response }]);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
+            let errorMessage = "Sorry, I'm having trouble connecting to the server.";
+
+            if (error.response) {
+                // Server responded with a status other than 2xx
+                errorMessage += ` (Status: ${error.response.status} - ${error.response.data?.detail || error.response.statusText})`;
+            } else if (error.request) {
+                // Request happened but no response
+                errorMessage += " (Network Error: Backend might be sleeping or unreachable. Check CORS or URL)";
+            } else {
+                errorMessage += ` (${error.message})`;
+            }
+
             setMessages((prev) => [
                 ...prev,
-                { role: "assistant", content: "Sorry, I'm having trouble connecting to the server. Please ensure the backend is running." },
+                { role: "assistant", content: errorMessage },
             ]);
         } finally {
             setIsLoading(false);
