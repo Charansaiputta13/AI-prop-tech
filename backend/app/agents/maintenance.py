@@ -8,9 +8,9 @@ import os
 class MaintenanceResponse(BaseModel):
     action: Literal["reply", "create_ticket"] = Field(description="The action to take: 'reply' to ask for more info, or 'create_ticket' if we have all details.")
     message: str = Field(description=" The message to send back to the user.")
-    ticket_title: Optional[str] = Field(description="Short title of the issue if creating a ticket.")
-    ticket_description: Optional[str] = Field(description="Detailed description of the issue if creating a ticket.")
-    ticket_priority: Optional[str] = Field(description="Priority level: low, medium, high, emergency. Default to medium.")
+    ticket_title: Optional[str] = Field(default=None, description="Short title of the issue if creating a ticket.")
+    ticket_description: Optional[str] = Field(default=None, description="Detailed description of the issue if creating a ticket.")
+    ticket_priority: Optional[str] = Field(default=None, description="Priority level: low, medium, high, emergency. Default to medium.")
 
 class MaintenanceAgent:
     def __init__(self):
