@@ -29,6 +29,10 @@ class MaintenanceAgent:
             If you have all the required information, set action to 'create_ticket'.
             If you are missing information, set action to 'reply' and ask the user for the missing details.
             
+            STYLING RULES:
+            - Use **Bold** for key questions.
+            - Use Lists for multiple questions.
+            
             Be polite and professional.
             
             {format_instructions}

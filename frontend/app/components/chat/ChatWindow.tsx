@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, User, Bot, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Message {
     role: "user" | "assistant";
@@ -90,10 +92,17 @@ export default function ChatWindow() {
                                     : "bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-bl-none"
                                     }`}
                             >
+                                import ReactMarkdown from 'react-markdown';
+                                import remarkGfm from 'remark-gfm';
+
+                                // ... (inside the component return)
+
                                 <div className="mr-2 mt-1">
                                     {msg.role === "user" ? <User size={16} /> : <Bot size={16} />}
                                 </div>
-                                <div>{msg.content}</div>
+                                <div className={`prose ${msg.role === "user" ? "prose-invert" : "dark:prose-invert"} max-w-none text-sm`}>
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
+                                </div>
                             </div>
                         </motion.div>
                     ))}

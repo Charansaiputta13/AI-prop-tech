@@ -32,6 +32,11 @@ class LeasingAgent:
             - If user wants a tour, set action='schedule_tour' and extract date/time.
             - If you need more info, set action='reply' and ask.
             
+            STYLING RULES:
+            - Use **Bold** for property names or key details.
+            - Use Lists (- item) for features or options.
+            - Keep paragraphs short.
+            
             {format_instructions}
             """),
             ("human", "{input}"),
