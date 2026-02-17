@@ -1,5 +1,6 @@
 from app.schemas.chat import ChatRequest, ChatResponse
 from app.agents.maintenance import MaintenanceAgent
+from app.agents.leasing import LeasingAgent
 from app.models.ticket import Ticket
 from app.models.user import User
 from sqlalchemy.orm import Session
@@ -16,6 +17,7 @@ class OrchestratorAgent:
             self.llm = None
             
         self.maintenance_agent = MaintenanceAgent()
+        self.leasing_agent = LeasingAgent()
 
     async def process(self, request: ChatRequest, db: Session) -> ChatResponse:
         user_msg = request.message
@@ -25,9 +27,13 @@ class OrchestratorAgent:
         # In a real app, we would get user_id from the auth token (Depends(get_current_user))
         user_id = self._get_or_create_demo_user(db)
 
-        # 1. Check if we are in a maintenance flow or intent
-        if self._is_maintenance_context(user_msg, history):
+        # 1. Determine Intent
+        intent = self._determine_intent(user_msg, history)
+        
+        if intent == "maintenance":
              return await self.handle_maintenance(user_msg, history, db, user_id)
+        elif intent == "leasing":
+             return await self.handle_leasing(user_msg, history)
         
         # 2. Default: General Chat
         return await self.general_chat(request)
@@ -48,25 +54,43 @@ class OrchestratorAgent:
             db.refresh(user)
         return user.id
 
-    def _is_maintenance_context(self, user_msg: str, history: list) -> bool:
+    def _determine_intent(self, user_msg: str, history: list) -> str:
         """
-        Determine if the user is talking about maintenance.
-        Check current message and recent history.
+        Determine the user's intent based on keywords and context.
+        Returns: 'maintenance', 'leasing', or 'general'
         """
-        keywords = ["fix", "leak", "broken", "repair", "maintenance", "not working", "hot water", "light", "power"]
+        msg_lower = user_msg.lower()
         
-        # check current message
-        if any(k in user_msg.lower() for k in keywords):
-            return True
+        # 1. Maintenance Keywords
+        maint_keywords = ["fix", "leak", "broken", "repair", "maintenance", "not working", "hot water", "light", "power"]
+        if any(k in msg_lower for k in maint_keywords):
+            return "maintenance"
+
+        # 2. Leasing Keywords
+        leasing_keywords = ["rent", "lease", "apartment", "unit", "bedroom", "tour", "price", "cost", "available", "move in"]
+        if any(k in msg_lower for k in leasing_keywords):
+            return "leasing"
             
-        # check if last assistant message was from maintenance agent
+        # 3. Contextual check (last agent used)
         if history and history[-1].role == "assistant":
             # Heuristic: if last message asked about priority or description, we are likely in flow
             last_content = history[-1].content.lower()
-            if "priority" in last_content or "describe" in last_content or "ticket" in last_content:
-                return True
+            if "priority" in last_content or "ticket" in last_content:
+                return "maintenance"
+            if "tour" in last_content or "budget" in last_content or "bedroom" in last_content:
+                return "leasing"
                 
-        return False
+        return "general"
+
+    async def handle_leasing(self, user_msg: str, history: list) -> ChatResponse:
+        """Delegate to LeasingAgent."""
+        result = await self.leasing_agent.process(history, user_msg)
+        
+        return ChatResponse(
+            response=result.message,
+            agent_used="LeasingAgent",
+            data={"action": result.action}
+        )
 
     async def handle_maintenance(self, user_msg: str, history: list, db: Session, user_id: int) -> ChatResponse:
         """
