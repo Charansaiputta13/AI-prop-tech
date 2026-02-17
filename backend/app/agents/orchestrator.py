@@ -4,14 +4,14 @@ from app.models.ticket import Ticket
 from app.models.user import User
 from sqlalchemy.orm import Session
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 import os
 
 class OrchestratorAgent:
     def __init__(self):
-        self.api_key = os.getenv("OPENAI_API_KEY")
+        self.api_key = os.getenv("GROQ_API_KEY")
         if self.api_key:
-            self.llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+            self.llm = ChatGroq(model="llama3-8b-8192", temperature=0)
         else:
             self.llm = None
             

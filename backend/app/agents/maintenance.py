@@ -1,4 +1,4 @@
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 from pydantic import BaseModel, Field
@@ -14,8 +14,8 @@ class MaintenanceResponse(BaseModel):
 
 class MaintenanceAgent:
     def __init__(self):
-        self.api_key = os.getenv("OPENAI_API_KEY")
-        self.llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+        self.api_key = os.getenv("GROQ_API_KEY")
+        self.llm = ChatGroq(model="llama3-70b-8192", temperature=0)
         self.parser = PydanticOutputParser(pydantic_object=MaintenanceResponse)
         
         self.prompt = ChatPromptTemplate.from_messages([
