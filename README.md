@@ -131,7 +131,7 @@ Ensure you have the following installed:
     ```
 
 4.  **Access the Application**:
-    - **Dashboard**: [http://localhost:3000](http://localhost:3000)
+    - **Dashboard**: [https://property-ai-suite--charansaiputta.replit.app/]
     - **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ### Option 2: Manual Setup
